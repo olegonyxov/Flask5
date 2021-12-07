@@ -20,5 +20,3 @@ class Genre(db.Model):
     name = db.Column(db.String(80), unique=True, nullable=False)
     tags = db.relationship('movies', secondary=movies_genres,
                            backref=db.backref('genres', lazy='dynamic'))
-
-db.create_all()
