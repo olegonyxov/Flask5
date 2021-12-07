@@ -9,8 +9,8 @@ movies_genres = db.table('movies_genres',
 class Movie(db.Model):
     __tablename__ = "movies"
     pk = db.Column(db.Integer, primary_key=True, nullable=False)
-    name = db.Column(db.String(80), unique=True, nullable=False)
-    tags = db.relationship('Genres', secondary=movies_genres,
+    name = db.Column(db.String(80))
+    tags = db.relationship('genres', secondary=movies_genres,
                            backref=db.backref('movies', lazy='dynamic'))
 
 
@@ -22,5 +22,3 @@ class Genre(db.Model):
                            backref=db.backref('genres', lazy='dynamic'))
 
 db.create_all()
-#
-#
