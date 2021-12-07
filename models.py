@@ -10,7 +10,6 @@ class Movie(db.Model):
     __tablename__ = "movies"
     pk = db.Column(db.Integer, primary_key=True, nullable=False)
     name = db.Column(db.String(80), unique=True, nullable=False)
-    release_date = db.Column(db.Date)
     tags = db.relationship('Genres', secondary=movies_genres,
                            backref=db.backref('movies', lazy='dynamic'))
 
