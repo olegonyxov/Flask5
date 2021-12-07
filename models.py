@@ -22,6 +22,6 @@ class Genre(db.Model):
     tags = db.relationship('movies', secondary=movies_genres,
                            backref=db.backref('genres', lazy='dynamic'))
 
-# db.create_all()
+db.create_all()
 #
 #
