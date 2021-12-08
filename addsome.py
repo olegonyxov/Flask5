@@ -1,6 +1,11 @@
 from app import db
-# from models import Movie
-# movie1 = Movie(name='d3453fghffklklghdgh1')
-# #
-# db.session.add(movie1)
-# db.session.commit()
+import datetime
+from models import Movie,Genre,movie_genre
+#
+date=datetime.date.today()
+
+movie1 = Movie(name='firstmovie')
+movie2 = Movie(name='secondmovie')
+movie3 = Movie(name='thirdmovie')
+db.session.add(movie1)
+db.session.commit()
