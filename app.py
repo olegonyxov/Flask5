@@ -28,13 +28,14 @@ def login_form():
         moviename = request.form['moviename']
         pempa = request.form['pempa']
         conn = sqlite3.connect('Test3.sqlite')
+        cur=conn.cursor()
         if moviename:
-            mname =conn.execute(f'SELECT * FROM movie WHERE name={moviename}')
+            mname =cur.execute(f'SELECT * FROM movie WHERE name={moviename}')
             for i in mname:
                 mlist.append(i)
             print(mlist)
         if pempa:
-            pname = conn.execute(f'SELECT * FROM movie WHERE pempa={pempa}')
+            pname = cur.execute(f'SELECT * FROM movie WHERE pempa={pempa}')
             for i in pname:
                 mlist.append(i)
             print(plist)
