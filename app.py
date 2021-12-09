@@ -10,7 +10,7 @@ app.config['SECRET_KEY'] = os.urandom(32)
 db = SQLAlchemy(app)
 
 
-
+#
 @app.route("/movie", methods=['POST', 'GET'])
 def login_form():
 
@@ -30,15 +30,24 @@ def login_form():
         conn = sqlite3.connect('Test3.sqlite')
         cur=conn.cursor()
         if moviename:
-            mname =cur.execute(f'SELECT * FROM movie WHERE name={moviename}')
+            mname =cur.execute(f'SELECT * FROM movie WHERE name="{moviename}"')
             for i in mname:
                 mlist.append(i)
             print(mlist)
         if pempa:
-            pname = cur.execute(f'SELECT * FROM movie WHERE pempa={pempa}')
+            pname = cur.execute(f'SELECT * FROM movie WHERE pempa="{pempa}"')
             for i in pname:
                 mlist.append(i)
             print(plist)
         response = make_response(render_template('movietemp.html', mlist=mlist, plist=plist))
         return response
 
+
+# mlist=[]
+# conn = sqlite3.connect('Test3.sqlite')
+# cur=conn.cursor()
+# mname =cur.execute(f'SELECT * FROM movie WHERE name = "firstmovie"')
+# for i in mname:
+#     mlist.append(i)
+#     print(i)
+# print(mlist)
