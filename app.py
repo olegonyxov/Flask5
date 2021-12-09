@@ -15,7 +15,8 @@ db = SQLAlchemy(app)
 def login_form():
 
     if request.method == 'GET':
-        return """
+        formtext = "input movie name or genre:"
+        return formtext+"""
                  <form action='http://localhost:5000/movie', method='POST'>
                      <input name="moviename">
                      <input name="pempa">
@@ -33,11 +34,11 @@ def login_form():
             mname =cur.execute(f'SELECT * FROM movie WHERE name="{moviename}"')
             for i in mname:
                 mlist.append(i)
-            print(mlist)
+
         if pempa:
             pname = cur.execute(f'SELECT * FROM movie WHERE pempa="{pempa}"')
             for i in pname:
                 mlist.append(i)
-            print(plist)
+
         response = make_response(render_template('movietemp.html', mlist=mlist, plist=plist))
         return response
