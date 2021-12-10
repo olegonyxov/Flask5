@@ -1,16 +1,15 @@
 from flask import Flask, render_template, make_response
 from sqlalchemy import create_engine
 from sqlalchemy.orm import sessionmaker
-
 from models import Movie, Base
+
+app = Flask(__name__)
+app.config.from_pyfile("app_config.cfg")
 
 engine = create_engine('sqlite:///Test3.sqlite')
 Base.metadata.bind = engine
 DBSession = sessionmaker(bind=engine)
 session = DBSession()
-
-app = Flask(__name__)
-app.config.from_pyfile("app_config.cfg")
 
 
 @app.route("/movie", methods=['GET'])
