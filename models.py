@@ -26,5 +26,6 @@ class Genre(Base):
                           secondary=movie_genre,
                           backref="movies")
 
+
 if __name__ == "__main__":
     Base.metadata.create_all(engine)
