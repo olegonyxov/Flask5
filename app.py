@@ -1,44 +1,25 @@
-import os
-import sqlite3
 from flask import Flask, render_template, request, make_response
-from flask_sqlalchemy import SQLAlchemy
+from sqlalchemy import create_engine
+from sqlalchemy.orm import sessionmaker
+
+from models import Movie, Base
+
+engine = create_engine('sqlite:///Test3.sqlite')
+Base.metadata.bind = engine
+DBSession = sessionmaker(bind=engine)
+session = DBSession()
 
 app = Flask(__name__)
-app.config['SQLALCHEMY_DATABASE_URI'] = 'sqlite:///Test3.sqlite'
-app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
-app.config['SECRET_KEY'] = os.urandom(32)
-db = SQLAlchemy(app)
+app.config.from_pyfile("app_config.cfg")
 
 
-#
 @app.route("/movie", methods=['POST', 'GET'])
 def login_form():
-
     if request.method == 'GET':
-        formtext = "input movie name or genre:"
-        return formtext+"""
-                 <form action='http://localhost:5000/movie', method='POST'>
-                     <input name="moviename">
-                     <input name="pempa">
-                     <input type="submit">
-                 </form>
-                """
-    elif request.method == 'POST':
-        mlist=[]
-        plist=[]
-        moviename = request.form['moviename']
-        pempa = request.form['pempa']
-        conn = sqlite3.connect('Test3.sqlite')
-        cur=conn.cursor()
-        if moviename:
-            mname =cur.execute(f'SELECT * FROM movie WHERE name="{moviename}"')
-            for i in mname:
-                mlist.append(i)
-
-        if pempa:
-            pname = cur.execute(f'SELECT * FROM movie WHERE pempa="{pempa}"')
-            for i in pname:
-                mlist.append(i)
-
-        response = make_response(render_template('movietemp.html', mlist=mlist, plist=plist))
+        quer = session.query(Movie).all()
+        querList = []
+        for i in quer:
+            q_gather = (i.name, i.uppdate)
+            querList.append(q_gather)
+        response = make_response(render_template('movietemp.html', querList=querList))
         return response

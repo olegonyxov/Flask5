@@ -6,13 +6,9 @@
     <title>Visit Counter</title>
 </head>
 <body>
-{% if mlist %}
-{%for var in mlist%}
+{% if querList %}
+{%for var in querList%}
 <h1>movie {{var}}</h1>
-{%endfor%}
-{% elif mlist %}
-{%for var in mlist%}
-<h1>movie {{plist}}</h1>
 {%endfor%}
 {% endif %}
 

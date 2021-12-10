@@ -1,23 +1,30 @@
-from app import db
+from sqlalchemy import Table, Column, Integer, String, ForeignKey, Date, create_engine
+from sqlalchemy.ext.declarative import declarative_base
+from sqlalchemy.orm import relationship
 
-movie_genre = db.Table('movie_genre',
-    db.Column('genre_id', db.Integer, db.ForeignKey('genre.id')),
-    db.Column('movie_id', db.Integer, db.ForeignKey('movie.id'))
-)
+Base = declarative_base()
+engine = create_engine('sqlite:///Test3.sqlite')
 
-class Movie(db.Model):
-    id = db.Column(db.Integer, primary_key=True)
-    name = db.Column(db.String(80), unique=True, nullable=False)
-    pempa = db.Column(db.String(80), unique=False,nullable=True)
-    uppdate = db.Column(db.String(80))
-    movie_genre = db.relationship('Genre', secondary=movie_genre,
-        backref=db.backref('movies', lazy='dynamic'))
-
-class Genre(db.Model):
-    id = db.Column(db.Integer, primary_key=True)
-    name = db.Column(db.String(80), unique=True, nullable=False)
+movie_genre = Table("movies_genres", Base.metadata,
+                    Column('genres_pk', Integer, ForeignKey('genres.pk')),
+                    Column('movies_pk', Integer, ForeignKey('movies.pk')))
 
 
-# db.create_all()
+class Movie(Base):
+    __tablename__ = "movies"
+    pk = Column(Integer, nullable=False, unique=True, primary_key=True, autoincrement=True)
+    name = Column(String(80), unique=True, nullable=False)
+    pempa = Column(String(80), unique=False, nullable=True)
+    uppdate = Column(Date, nullable=True)
 
 
+class Genre(Base):
+    __tablename__ = "genres"
+    pk = Column(Integer, nullable=False, unique=True, primary_key=True, autoincrement=True)
+    name = Column(String(80), unique=True, nullable=False)
+    movies = relationship("Movie",
+                          secondary=movie_genre,
+                          backref="movies")
+
+if __name__ == "__main__":
+    Base.metadata.create_all(engine)
